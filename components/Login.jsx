@@ -1,13 +1,36 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, TextInput, Button, StyleSheet, Alert, Text } from "react-native";
+import { useAuthContext } from "../context/AuthContext";
+import { validate } from "../utils/validate";
 
 function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errors, setErrors] = useState({});
+  const { state, signIn } = useAuthContext();
   const handleLogin = () => {
-    // Handle login logic here
-    Alert.alert("Login", `Email: ${email}\nPassword: ${password}`);
+    if (!email || !password) {
+      setErrors({
+        emailError: email ? "" : "Please Enter Email",
+        passwordError: password ? "" : " Please Enter Password",
+      });
+
+      return;
+    }
+    if (email) {
+      const x = validate(email);
+      if (!x)
+        setErrors((i) => ({
+          ...i,
+          emailError: "Please Enter correct email",
+          password: "",
+        }));
+      else {
+        setErrors({});
+      }
+    }
+    signIn(email, password);
+    setErrors({});
   };
 
   return (
@@ -20,6 +43,7 @@ function LoginScreen() {
         keyboardType="email-address"
         autoCapitalize="none"
       />
+      {Object.keys(errors).length > 0 ? <Text>{errors.emailError} </Text> : ""}
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -27,6 +51,11 @@ function LoginScreen() {
         onChangeText={setPassword}
         secureTextEntry
       />
+      {Object.keys(errors).length > 0 ? (
+        <Text>{errors.passwordError} </Text>
+      ) : (
+        ""
+      )}
       <View style={styles.buttonContainer}>
         <Button title="Login" onPress={handleLogin} />
       </View>
