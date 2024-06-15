@@ -1,6 +1,6 @@
 #How to run this Assignment locally
 
-1. Clone the repository through this link https://github.com/aditijaiswal189/AtlantisAssignment.git.
+1. Clone the repository in your terminal with the command : git clone https://github.com/aditijaiswal189/AtlantisAssignment.git 
 2. Open your terminal and run the command : npm install.
 3. Now run the command : npm start.
 4. Download the ExpoGo app from playstore and scan the QR code provided in the terminal in step no. 3
